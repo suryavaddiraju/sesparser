@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+ignore-vcs = true
+
+[project]
+name = "sesparser"
+dynamic = ["version"]
+authors = [
+  { name="Vaddiraju Surya Teja", email="suryavaddiraju@proton.me" },
+]
+description = "AWS SES Email Parser"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "Apache-2.0"
+keywords = [
+  "AWS",
+  "SES",
+  "aws ses",
+  "ses parser",
+  "email",
+  "email parser",
+  "parser",
+  "lambda",
+  "layer",
+  "lambda layer",
+  "dynamodb",
+  "email body",
+  "attachments",
+  "inline attachments",
+  "body",
+  "inline",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "boto3>=1.28.74",
+  "chardet>=5.2.0",
+  "pytz>=2023.3",
+]
+
+[tool.hatch.version]
+path = "src/sesparser/__version__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sesparser"]
+
+[project.urls]
+"Homepage" = "https://github.com/suryavaddiraju/sesparser"
+"Bug Tracker" = "https://github.com/suryavaddiraju/sesparser/issues"
+Documentation = "https://sesparser.readthedocs.io"
