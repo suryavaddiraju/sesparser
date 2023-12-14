@@ -8,10 +8,12 @@ on:
     - 'main'
 
 jobs:
-  Build_and_deploy:
+  build:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    environment: release
+    environment: 
+      name: pypi
+      url: https://pypi.org/p/sesparser
     permissions:
       contents: write
       # IMPORTANT: this permission is mandatory for trusted publishing
