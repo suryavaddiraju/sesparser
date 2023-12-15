@@ -89,5 +89,5 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
         gh release create v$VERSION_C --repo '${{ github.repository }}' --notes ""
-        gh release upload v$VERSION_C  ./dist/** --repo '${{ github.repository }}'
+        gh release upload v$VERSION_C dist/** --repo '${{ github.repository }}'
         
