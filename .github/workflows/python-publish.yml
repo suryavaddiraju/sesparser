@@ -80,10 +80,13 @@ jobs:
           ./dist/*.tar.gz
           ./dist/*.whl
     - uses: actions/checkout@v4
+    - name: Get version from code
+      id: get_version
+      run: echo "::set-output name=version::$(grep "__version__" src/sesparser/__version__.py | awk -F'"' '{print $2}')"
     - name: Create GitHub Release
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
-        version_variable = $(grep "__version__" ./src/sesparser/__version__.py | awk -F'"' '{print "v" $2}')
-        gh release create $version_variable --repo '${{ github.repository }}' --notes ""
-        gh release upload $version_variable dist/** --repo '${{ github.repository }}'
+        gh release create v${{ steps.get_version.outputs.version }} --repo '${{ github.repository }}' --notes ""
+        gh release upload v${{ steps.get_version.outputs.version }}  dist/** --repo '${{ github.repository }}'
+        
