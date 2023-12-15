@@ -11,9 +11,7 @@ jobs:
   build:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    environment: 
-      name: pypi
-      url: https://pypi.org/p/sesparser
+    environment: release
     permissions:
       contents: write
       # IMPORTANT: this permission is mandatory for trusted publishing
@@ -30,6 +28,9 @@ jobs:
           python3 -m pip install --upgrade build
           python3 -m build
       - name: Publish package distributions to PyPI
+        env:
+          name: pypi
+          url: https://pypi.org/p/sesparser
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           path: dist/
