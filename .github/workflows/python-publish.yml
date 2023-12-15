@@ -82,11 +82,15 @@ jobs:
     - uses: actions/checkout@v4
     - name: Get version from code
       id: get_version
-      run: echo "::set-output name=version::$(grep "__version__" src/sesparser/__version__.py | awk -F'"' '{print $2}')"
+      run: echo "version=$(grep "__version__" ./src/sesparser/__version__.py | awk -F'"' '{print $2}')" >> "$GITHUB_OUTPUT"
     - name: Create GitHub Release
       env:
+        VERSION_C: ${{ steps.get_version.outputs.version }}
         GITHUB_TOKEN: ${{ github.token }}
+      uses: actions/download-artifact@v3
+      with:
+        path: dist/
       run: |
-        gh release create v${{ steps.get_version.outputs.version }} --repo '${{ github.repository }}' --notes ""
-        gh release upload v${{ steps.get_version.outputs.version }}  dist/** --repo '${{ github.repository }}'
+        gh release create v$VERSION_C --repo '${{ github.repository }}' --notes ""
+        gh release upload v$VERSION_C  ./dist/** --repo '${{ github.repository }}'
         
