@@ -98,7 +98,8 @@ jobs:
         gh release create
         v$VERSION_C
         --repo '${{ github.repository }}'
-        --notes ""
+        --notes "Stable Public Python Version released for repository sesparser available at pypi library can be installed through 'pip install sesparser' with version id $VERSION_C - additional release notes available in the HISTORY.MD file located in this repository root directory"
+        --title "sesparser - $VERSION_C"
     - name: Upload artifact signatures to GitHub Release
       env:
         VERSION_C: ${{ needs.get_version.outputs.version }}
