@@ -94,12 +94,17 @@ jobs:
       env:
         VERSION_C: ${{ needs.get_version.outputs.version }}
         GITHUB_TOKEN: ${{ github.token }}
-      run: >-
-        gh release create
-        v$VERSION_C
-        --repo '${{ github.repository }}'
-        --notes "A stable public version $VERSION_C has been released for the python package **sesparser** which is available online at python packages [pypi library](https://pypi.org/project/sesparser/)\nThe latest version of the module can be installed through this below pip command:\n```shell\npip install sesparser\n```\nIf you need to install it offline, then first download the [sesparser-$VERSION_C-py3-none-any.whl](https://github.com/suryavaddiraju/sesparser/releases/download/v$VERSION_C/sesparser-$VERSION_C-py3-none-any.whl) file attached in the assets part of this release note. then use this below pip command\n```shell\npip install path/to/the/downloaded/whl/file\n```\nAdditional release note for this version is made available at the [HISTORY.MD](/HISTORY.MD) file located in this [github repository](https://github.com/suryavaddiraju/sesparser) root folder."
-        --title "v$VERSION_C"
+      run: |
+        gh release create v$VERSION_C --repo '${{ github.repository }}'--notes "A stable public version $VERSION_C has been released for the python package **sesparser** which is available online at python packages [pypi library](https://pypi.org/project/sesparser/)
+        The latest version of the module can be installed through this below pip command:
+        ```shell
+        pip install sesparser
+        ```
+        If you need to install it offline, then first download the [sesparser-$VERSION_C-py3-none-any.whl](https://github.com/suryavaddiraju/sesparser/releases/download/v$VERSION_C/sesparser-$VERSION_C-py3-none-any.whl) file attached in the assets part of this release note. then use this below pip command
+        ```shell
+        pip install path/to/the/downloaded/whl/file
+        ```
+        Additional release note for this version is made available at the [HISTORY.MD](/HISTORY.MD) file located in this [github repository](https://github.com/suryavaddiraju/sesparser) root folder." --title "v$VERSION_C"
     - name: Upload artifact signatures to GitHub Release
       env:
         VERSION_C: ${{ needs.get_version.outputs.version }}
