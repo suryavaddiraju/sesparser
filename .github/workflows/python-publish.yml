@@ -87,7 +87,6 @@ jobs:
       env:
         VERSION_C: ${{ steps.get_version.outputs.version }}
         GITHUB_TOKEN: ${{ github.token }}
-      uses: actions/download-artifact@v3
       with:
         path: dist/
       run: |
