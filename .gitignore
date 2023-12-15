@@ -22,7 +22,7 @@ env/
 .eggs/
 
 .workon
-
+dist
 # in case you work with IntelliJ/PyCharm
 .idea
 *.iml

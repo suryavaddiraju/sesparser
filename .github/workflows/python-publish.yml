@@ -8,7 +8,9 @@ on:
     - 'main'
 jobs:
   build:
-    if: github.event.pull_request.merged == true
+    if: |
+      startsWith(github.head_ref, 'development/') &&
+      github.event.pull_request.merged == true
     name: Build distribution 📦
     runs-on: ubuntu-latest
 
@@ -33,7 +35,6 @@ jobs:
         path: dist/
 
   publish-to-pypi:
-    if: github.event.pull_request.merged == true
     name: >-
       Publish Python 🐍 distribution 📦 to PyPI
     needs:
@@ -53,14 +54,24 @@ jobs:
         path: dist/
     - name: Publish distribution 📦 to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-
+  get_version:
+    name: Create a version id
+    needs:
+    - publish-to-pypi
+    outputs:
+      version: ${{steps.get_version.outputs.version}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get version from code
+        id: get_version
+        run: echo "version=$(grep "__version__" ./src/sesparser/__version__.py | awk -F'"' '{print $2}')" >> "$GITHUB_OUTPUT"
   github-release:
-    if: github.event.pull_request.merged == true
     name: >-
       Sign the Python 🐍 distribution 📦 with Sigstore
       and upload them to GitHub Release
     needs:
-    - publish-to-pypi
+    - get_version
     runs-on: ubuntu-latest
 
     permissions:
@@ -79,15 +90,24 @@ jobs:
         inputs: >-
           ./dist/*.tar.gz
           ./dist/*.whl
-    - uses: actions/checkout@v4
-    - name: Get version from code
-      id: get_version
-      run: echo "version=$(grep "__version__" ./src/sesparser/__version__.py | awk -F'"' '{print $2}')" >> "$GITHUB_OUTPUT"
     - name: Create GitHub Release
       env:
-        VERSION_C: ${{ steps.get_version.outputs.version }}
+        VERSION_C: ${{ needs.get_version.outputs.version }}
         GITHUB_TOKEN: ${{ github.token }}
-      run: |
-        gh release create v$VERSION_C --repo '${{ github.repository }}' --notes ""
-        gh release upload v$VERSION_C dist/** --repo '${{ github.repository }}'
+      run: >-
+        gh release create
+        'v$VERSION_C'
+        --repo '${{ github.repository }}'
+        --notes ""
+    - name: Upload artifact signatures to GitHub Release
+      env:
+        VERSION_C: ${{ needs.get_version.outputs.version }}
+        GITHUB_TOKEN: ${{ github.token }}
+      # Upload to GitHub Release using the `gh` CLI.
+      # `dist/` contains the built packages, and the
+      # sigstore-produced signatures and certificates.
+      run: >-
+        gh release upload
+        'v$VERSION_C' dist/**
+        --repo '${{ github.repository }}'
         
