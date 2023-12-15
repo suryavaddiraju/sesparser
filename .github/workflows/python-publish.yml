@@ -8,9 +8,7 @@ on:
     - 'main'
 jobs:
   build:
-    if: |
-      startsWith(github.head_ref, 'development/') &&
-      github.event.pull_request.merged == true
+    if: startsWith(github.head_ref, 'development/') && github.event.pull_request.merged == true
     name: Build distribution 📦
     runs-on: ubuntu-latest
 
