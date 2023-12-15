@@ -5,7 +5,9 @@ on:
     types:
       - closed
     branches:
-    - 'main'
+      - 'main'
+    paths:
+      - '**/sesparser/__version__.py'
 jobs:
   build:
     if: startsWith(github.head_ref, 'development') && github.event.pull_request.merged == true
