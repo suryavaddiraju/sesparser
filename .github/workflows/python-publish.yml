@@ -87,8 +87,6 @@ jobs:
       env:
         VERSION_C: ${{ steps.get_version.outputs.version }}
         GITHUB_TOKEN: ${{ github.token }}
-      with:
-        path: dist/
       run: |
         gh release create v$VERSION_C --repo '${{ github.repository }}' --notes ""
         gh release upload v$VERSION_C  ./dist/** --repo '${{ github.repository }}'
