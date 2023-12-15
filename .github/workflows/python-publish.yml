@@ -79,6 +79,7 @@ jobs:
         inputs: >-
           ./dist/*.tar.gz
           ./dist/*.whl
+    - uses: actions/checkout@v4
     - name: Create GitHub Release
       env:
         GITHUB_TOKEN: ${{ github.token }}
