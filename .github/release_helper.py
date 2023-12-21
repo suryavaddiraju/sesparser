@@ -3,7 +3,7 @@ import sys
 current_dir = os.getcwd()
 
 # Construct the relative path
-relative_path = os.path.join(current_dir, '../src')
+relative_path = os.path.join(current_dir, './src/')
 
 # Get the absolute path
 absolute_path = os.path.abspath(relative_path)
