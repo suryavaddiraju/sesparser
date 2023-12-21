@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-python@v4
       - name: Get version using python script
         id: get_version
-        run: python .github/release_helper.py
+        run: python ./.github/release_helper.py
   github-release:
     name: >-
       Sign the Python 🐍 distribution 📦 with Sigstore
