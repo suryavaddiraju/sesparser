@@ -1,16 +1,16 @@
-"""Copyright 2023 Vaddiraju Surya Teja
+# Copyright 2023 Vaddiraju Surya Teja
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
 
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License."""
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 import mimetypes
 import uuid
 import base64
@@ -18,11 +18,29 @@ import base64
 # This function gives file type bt giving file name
 #E.g.: input = example.pdf => output = application/pdf
 def get_file_type(filename):
+    """This function gives MIME Type of the filename
+    For example document.pdf => output = application/pdf
+    it's mainly used to detect attachment file type of the email
+    and also for uploading a file to S3 bucket with filetype variable
+
+    :param filename: Name of the file, for e.g. some_document.pdf
+    :type filename: string
+    :return: MIME type of the given file, for e.g. application/pdf
+    :rtype: string
+    """
     mime_type, _ = mimetypes.guess_type(filename)
-    return mime_type or 'unknown'
+    return mime_type or 'application/octet-stream'
 
 # This function extracts attachment from part of email message
 def extract_attachments_from_part(part):
+    """This Function extracts the email attachment part by providing
+    the email message part 
+
+    :param part: _description_
+    :type part: 
+    :return: _description_
+    :rtype: _type_
+    """
     attachments = []
     content_disposition = part.get("Content-Disposition", None)
     if content_disposition:
@@ -32,8 +50,6 @@ def extract_attachments_from_part(part):
         attachment = {}
         attachment['filename'] = filename
         file_type = get_file_type(filename)
-        if file_type == "unknown":
-            file_type = "application/octet-stream"
         attachment['file_type'] = file_type
         attachment['data'] = part.get_payload(decode=True)
         attachment["size"] = len(attachment["data"])
