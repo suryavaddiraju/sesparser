@@ -48,6 +48,7 @@ jobs:
       - name: Get version using python script
         id: get_version
         run: python .github/release_helper.py
+        working-directory: ${{ github.workspace }}
   github-release:
     name: >-
       Sign the Python 🐍 distribution 📦 with Sigstore
