@@ -1,3 +1,6 @@
 sphinx
 sphinx-rtd-theme
 myst-parser
+boto3
+pytz
+chardet
