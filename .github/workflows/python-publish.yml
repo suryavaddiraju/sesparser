@@ -34,17 +34,21 @@ jobs:
         name: python-package-distributions
         path: dist/
   get_version:
-    name: Create a version id
+    name: Construct a Release Notes and Pass Version ID
     needs:
     - build
     outputs:
       version: ${{steps.get_version.outputs.version}}
+      release_notes: ${{steps.get_version.outputs.release_notes}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Get version from code
+      - name: Set up Python
+        uses: actions/setup-python@v4
+      - name: Get version using python script
         id: get_version
-        run: echo "version=$(grep "__version__" ./src/sesparser/__version__.py | awk -F'"' '{print $2}')" >> "$GITHUB_OUTPUT"
+        run: python .github/release_helper.py
+        working-directory: ./src
   github-release:
     name: >-
       Sign the Python 🐍 distribution 📦 with Sigstore
@@ -72,12 +76,13 @@ jobs:
     - name: Create GitHub Release
       env:
         VERSION_C: ${{ needs.get_version.outputs.version }}
+        RELEASE_NOTES: ${{ needs.get_version.outputs.release_notes }}
         GITHUB_TOKEN: ${{ github.token }}
       run: >-
         gh release create
         v$VERSION_C
         --repo '${{ github.repository }}'
-        --notes "A stable public version $VERSION_C has been released for the python package **sesparser** which is available online at python packages [pypi library](https://pypi.org/project/sesparser/)<br>The latest version of the module can be installed through this below pip command:<br>```pip install sesparser```<br>If you need to install it offline, then first download the [sesparser-$VERSION_C-py3-none-any.whl](https://github.com/suryavaddiraju/sesparser/releases/download/v$VERSION_C/sesparser-$VERSION_C-py3-none-any.whl) file attached in the assets part of this release note. then use this below pip command<br>```pip install path/to/the/downloaded/whl/file```<br>Additional release note for this version is made available at the [HISTORY.MD](/HISTORY.MD) file located in this [github repository](https://github.com/suryavaddiraju/sesparser) root folder."
+        --notes "$RELEASE_NOTES"
         --title "v$VERSION_C"
     - name: Upload artifact signatures to GitHub Release
       env:
