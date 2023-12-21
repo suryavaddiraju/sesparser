@@ -1,11 +1,21 @@
 import sys
 import os
 sys.path.insert(0, os.path.abspath("../src/"))
-project = sesparser.__title__
-copyright = sesparser.__copyright__
-author = sesparser.__author__
-release = sesparser.__version__
-version = sesparser.__version__
+from sesparser import(
+    __title__,
+    __description__,
+    __url__,
+    __version__,
+    __author__,
+    __author_email__,
+    __license__,
+    __copyright__,
+)
+project = __title__
+copyright = __copyright__
+author = __author__
+release = __version__
+version = __version__
 extensions = [
     'sphinx.ext.duration',
     'sphinx.ext.doctest',
