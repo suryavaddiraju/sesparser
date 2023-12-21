@@ -8,6 +8,9 @@ relative_path = os.path.join(current_dir, '../src')
 # Get the absolute path
 absolute_path = os.path.abspath(relative_path)
 sys.path.insert(0, absolute_path)
+print("Current directory:", current_dir)
+print("Absolute path to 'src':", absolute_path)
+print("sys.path:", sys.path)
 from sesparser import(
     __version__
 )
