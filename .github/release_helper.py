@@ -1,6 +1,13 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath("../src/"))
+current_dir = os.getcwd()
+
+# Construct the relative path
+relative_path = os.path.join(current_dir, '../src')
+
+# Get the absolute path
+absolute_path = os.path.abspath(relative_path)
+sys.path.insert(0, absolute_path)
 from sesparser import(
     __version__
 )
