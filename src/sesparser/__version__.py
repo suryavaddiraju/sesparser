@@ -5,7 +5,7 @@
 __title__ = "sesparser"
 __description__ = "SES Incoming email Parser"
 __url__ = "https://sesparser.readthedocs.io"
-__version__ = "1.9.4.8"
+__version__ = "1.9.4.9"
 __author__ = "Vaddiraju Surya Teja"
 __author_email__ = "suryavaddiraju@proton.me"
 __license__ = "Apache-2.0"
